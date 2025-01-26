@@ -46,7 +46,9 @@ resource "aws_cognito_user_pool_domain" "cognito-domain" {
 }
 
 resource "aws_cognito_user_pool_client" "users-client" {
+  depends_on      = [aws_cognito_user_pool.users-pool]
   name            = "dotvideos-1-users-client"
   user_pool_id    = aws_cognito_user_pool.users-pool.id
   generate_secret = true
 }
+
