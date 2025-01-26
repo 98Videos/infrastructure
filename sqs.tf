@@ -1,9 +1,5 @@
-provider "aws" {
-  region = "us-east-1"
-}
-
-resource "aws_sqs_queue" "videos_to_process_queue" {
-  name                        = "videos-to-process-queue"
+resource "aws_sqs_queue" "videos-to-process-queue" {
+  name                        = "videos-to-process-queue.fifo"
   visibility_timeout_seconds  = 30       # Timeout for processing messages
   message_retention_seconds   = 345600   # Retain messages for 4 days
   delay_seconds               = 0        # Delay delivery of messages by 0 seconds
@@ -19,5 +15,5 @@ resource "aws_sqs_queue" "videos_to_process_queue" {
 }
 
 output "sqs_queue_url" {
-  value = aws_sqs_queue.videos_to_process_queue.id
+  value = aws_sqs_queue.videos-to-process-queue.id
 }
