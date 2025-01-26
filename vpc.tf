@@ -24,6 +24,7 @@ resource "aws_subnet" "private-us-east-1a" {
     "kubernetes.io/role/internal-elb" = "1"
     "kubernetes.io/cluster/demo"      = "owned"
     type                              = "private"
+    Project                           = "dotvideos"
   }
 }
 
@@ -37,6 +38,7 @@ resource "aws_subnet" "private-us-east-1b" {
     "kubernetes.io/role/internal-elb" = "1"
     "kubernetes.io/cluster/demo"      = "owned"
     type                              = "private"
+    Project                           = "dotvideos"
   }
 }
 
@@ -53,6 +55,7 @@ resource "aws_subnet" "public-us-east-1a" {
     "kubernetes.io/role/elb"     = "1" #this instruct the kubernetes to create public load balancer in these subnets
     "kubernetes.io/cluster/demo" = "owned"
     type                         = "public"
+    Project                           = "dotvideos"
   }
 }
 
@@ -67,6 +70,7 @@ resource "aws_subnet" "public-us-east-1b" {
     "kubernetes.io/role/elb"     = "1" #this instruct the kubernetes to create public load balancer in these subnets
     "kubernetes.io/cluster/demo" = "owned"
     type                         = "public"
+    Project                           = "dotvideos"
   }
 }
 
