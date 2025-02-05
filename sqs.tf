@@ -1,3 +1,4 @@
+# acho que não precisa disso, o próprio worker já cria a fila
 resource "aws_sqs_queue" "videos-to-process-queue" {
   name                        = "videos-to-process-queue.fifo"
   visibility_timeout_seconds  = 30       # Timeout for processing messages

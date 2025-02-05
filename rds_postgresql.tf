@@ -1,4 +1,5 @@
 data "aws_subnets" "private_subnets" {
+  depends_on = [aws_subnet.private-us-east-1a, aws_subnet.private-us-east-1b]
   filter {
     name   = "tag:type"
     values = ["private"]

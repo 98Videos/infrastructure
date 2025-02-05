@@ -30,6 +30,7 @@ jobs:
     - name: Terraform Init
       run: terraform init
 
+    # put secrets in env to avoid leaking in console
     - name: Terraform Plan
       run: |
         terraform plan \
@@ -44,6 +45,7 @@ jobs:
           -var="mediamanagement_dbuser=${{ secrets.DB_USER }}" \
           -var="mediamanagement_dbpassword=${{ secrets.DB_PASSWORD }}"
 
+  #remover, não há recursos k8s para serem aplicados
   create-k8s-resources:
     needs: terraform
     name: Create Kubernetes Resources
