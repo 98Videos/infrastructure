@@ -1,13 +1,8 @@
-resource "aws_s3_bucket" "videos_bucket" {
-  bucket = "videos-bucket-soat72025"
-  tags = {
-    Name = "VideosBucket"
-  }
-}
-
-resource "aws_s3_bucket" "zip_images_bucket" {
-  bucket = "zip-images-bucket-soat72025"
-  tags = {
-    Name = "ZipImagesBucket"
+terraform {
+  backend "s3" {
+    bucket = "98videos-infra"
+    key    = "states/98videos-infra"
+    region = "us-east-1"
+    profile = "default"
   }
 }
