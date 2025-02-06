@@ -50,5 +50,20 @@ resource "aws_cognito_user_pool_client" "users-client" {
   name            = "dotvideos-1-users-client"
   user_pool_id    = aws_cognito_user_pool.users-pool.id
   generate_secret = true
+
+  allowed_oauth_flows                  = ["code"]
+  allowed_oauth_scopes                 = ["openid"]
+  allowed_oauth_flows_user_pool_client = true
+  callback_urls                        = ["https://example.com"]
+  auth_session_validity                = 15
+  supported_identity_providers         = ["COGNITO"]
+}
+
+output "cognito_user_pool_id" {
+  value = aws_cognito_user_pool.users-pool.id
+}
+
+output "cognito_user_pool_domain" {
+  value = aws_cognito_user_pool_domain.cognito-domain.domain
 }
 
