@@ -1,4 +1,4 @@
-name: Apply Terraform and Create Kubernetes Resources
+name: Apply Terraform 
 
 on:
   push:
@@ -12,6 +12,13 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
   AWS_REGION: us-east-1
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: read
 
 jobs:
   terraform:
@@ -27,19 +34,27 @@ jobs:
       with:
         terraform_version: "1.1.7"
 
-    - name: Terraform Init
-      run: terraform init
+    - id: init
+      name: Terraform Init
+      run: terraform init -backend-config="bucket=${{ vars.TERRAFORM_S3_BACKEND }}"
 
-    - name: Terraform Plan
-      run: |
-        terraform plan \
-          -var="eks_role=${{ secrets.EKS_ROLE }}" \
-          -var="mediamanagement_dbuser=${{ secrets.DB_USER }}" \
-          -var="mediamanagement_dbpassword=${{ secrets.DB_PASSWORD }}"
+    - id: validate
+      name: Terraform Validate
+      run: terraform validate
 
-    - name: Terraform Apply
-      run: |
-        terraform apply -auto-approve \
-          -var="eks_role=${{ secrets.EKS_ROLE }}" \
-          -var="mediamanagement_dbuser=${{ secrets.DB_USER }}" \
-          -var="mediamanagement_dbpassword=${{ secrets.DB_PASSWORD }}"
+    - id: plan
+      name: Terraform Plan
+      env: 
+        TF_VAR_eks_role: ${{ secrets.EKS_ROLE }}
+        TF_VAR_mediamanagement_dbuser: ${{ secrets.DB_USER }}
+        TF_VAR_mediamanagement_dbpassword: ${{ secrets.DB_PASSWORD }}
+      run: terraform plan 
+
+    - id: apply
+      if: github.ref == 'refs/heads/main'
+      name: Terraform Apply
+      env: 
+        TF_VAR_eks_role: ${{ secrets.EKS_ROLE }}
+        TF_VAR_mediamanagement_dbuser: ${{ secrets.DB_USER }}
+        TF_VAR_mediamanagement_dbpassword: ${{ secrets.DB_PASSWORD }}
+      run: terraform apply -auto-approve
