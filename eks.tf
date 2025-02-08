@@ -21,7 +21,9 @@ resource "aws_eks_node_group" "dotcluster-nodes" {
 
   subnet_ids = [
     aws_subnet.private-us-east-1a.id,
-    aws_subnet.private-us-east-1b.id
+    aws_subnet.private-us-east-1b.id,
+    aws_subnet.public-us-east-1a.id,
+    aws_subnet.public-us-east-1b.id
   ]
 
   capacity_type  = "ON_DEMAND"
@@ -39,5 +41,9 @@ resource "aws_eks_node_group" "dotcluster-nodes" {
 
   labels = {
     node = "kubenode02"
+  }
+
+  tags = {
+    "aws:eks:cluster-name" = "dotcluster" #this instruct the kubernetes to create public load balancer in these subnets
   }
 }
